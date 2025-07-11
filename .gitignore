@@ -4,3 +4,4 @@ tests/stm32_project/Debug/
 tests/stm32_project/.settings/
 tests/stm32_project/Drivers/
 .mypy_cache/
+package-lock.json
