@@ -27,27 +27,43 @@ class EclipseProjectParser:
                 raw_source_paths.append(entry.get("name"))
         self.source_paths = list(set(raw_source_paths))
 
-        # Extract include paths and defines from the C compiler tool
-        c_compiler_tool = root.find(".//tool[@superClass='com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler']")
-        if c_compiler_tool is not None:
-            for option in c_compiler_tool.findall("option"):
-                if option.get("superClass") == "com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includepaths":
-                    for value in option.findall("listOptionValue"):
-                        self.include_paths.append(value.get("value").replace("../", "")) # Remove ../ for relative paths
-                elif option.get("superClass") == "com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.definedsymbols":
-                    for value in option.findall("listOptionValue"):
-                        self.defines.append(value.get("value"))
+        # Use sets to store unique include paths and defines
+        unique_include_paths = set()
+        unique_defines = set()
 
-        # Extract linker script from the C++ linker tool (assuming C and C++ linkers use the same script)
-        cpp_linker_tool = root.find(".//tool[@superClass='com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.linker']")
-        if cpp_linker_tool is not None:
-            for option in cpp_linker_tool.findall("option"):
-                if option.get("superClass") == "com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.linker.option.script":
+        # Extract include paths and defines from all toolchains
+        for tool_chain in root.findall(".//toolChain"):
+            for tool in tool_chain.findall("tool"):
+                for option in tool.findall("option"):
+                    if option.get("name") == "Include paths (-I)":
+                        for value in option.findall("listOptionValue"):
+                            unique_include_paths.add(value.get("value").replace("../", ""))
+                    elif option.get("name") == "Define symbols (-D)":
+                        for value in option.findall("listOptionValue"):
+                            unique_defines.add(value.get("value"))
+
+        self.include_paths = sorted(list(unique_include_paths))
+        self.defines = sorted(list(unique_defines))
+
+        # Extract linker script from any linker tool
+        linker_tool = None
+        for tool in root.findall(".//tool"):
+            if "Linker" in tool.get("name", ""):
+                for option in tool.findall("option"):
+                    if option.get("name") == "Linker Script (-T)":
+                        linker_tool = tool
+                        break
+                if linker_tool is not None:
+                    break
+        if linker_tool is not None:
+            for option in linker_tool.findall("option"):
+                if option.get("name") == "Linker Script (-T)":
                     linker_script_raw = option.get("value", "")
                     # Resolve ${workspace_loc:/${ProjName}/...} to a relative path
                     if linker_script_raw.startswith("${workspace_loc:/"):
                         # Find the end of the project name part
-                        start_index = len("${workspace_loc:/") + len(self.project_name) + 1 # +1 for the '/' after project name
+                        start_index = len("${workspace_loc:/") + \
+                                      len(self.project_name) + 1
                         # Remove the prefix and the trailing '}'
                         self.linker_script = linker_script_raw[start_index:-1]
                     else:
