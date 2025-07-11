@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?fileVersion 4.0.0?>
+<cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage">
+	<storageModule moduleId="org.eclipse.cdt.core.settings">
+		<cconfiguration id="com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.debug.1215208577">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.debug.1215208577" moduleId="org.eclipse.cdt.core.settings" name="Debug">
+				<toolChain id="com.st.stm32cube.ide.mcu.gnu.managedbuild.toolchain.exe.debug.1305136337" name="MCU ARM GCC" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.toolchain.exe.debug">
+					<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.1854273356" name="MCU/MPU GCC Compiler" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler">
+						<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.definedsymbols.1391412995" name="Define symbols (-D)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.definedsymbols" valueType="definedSymbols">
+							<listOptionValue builtIn="false" value="DEBUG"/>
+							<listOptionValue builtIn="false" value="USE_HAL_DRIVER"/>
+							<listOptionValue builtIn="false" value="STM32G030xx"/>
+						</option>
+						<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includepaths.1473076618" name="Include paths (-I)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includepaths" valueType="includePath">
+							<listOptionValue builtIn="false" value="../Core/Inc"/>
+							<listOptionValue builtIn="false" value="../Drivers/STM32G0xx_HAL_Driver/Inc"/>
+							<listOptionValue builtIn="false" value="../Drivers/STM32G0xx_HAL_Driver/Inc/Legacy"/>
+							<listOptionValue builtIn="false" value="../Drivers/CMSIS/Device/ST/STM32G0xx/Include"/>
+							<listOptionValue builtIn="false" value="../Drivers/CMSIS/Include"/>
+							<listOptionValue builtIn="false" value="../application"/>
+						</option>
+					</tool>
+					<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.509744474" name="MCU/MPU G++ Compiler" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler">
+						<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.option.definedsymbols.302779054" name="Define symbols (-D)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.option.definedsymbols" valueType="definedSymbols">
+							<listOptionValue builtIn="false" value="DEBUG"/>
+							<listOptionValue builtIn="false" value="USE_HAL_DRIVER"/>
+							<listOptionValue builtIn="false" value="STM32G030xx"/>
+						</option>
+						<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.option.includepaths.1714364009" name="Include paths (-I)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.option.includepaths" valueType="includePath">
+							<listOptionValue builtIn="false" value="../Core/Inc"/>
+							<listOptionValue builtIn="false" value="../Drivers/STM32G0xx_HAL_Driver/Inc"/>
+							<listOptionValue builtIn="false" value="../Drivers/STM32G0xx_HAL_Driver/Inc/Legacy"/>
+							<listOptionValue builtIn="false" value="../Drivers/CMSIS/Device/ST/STM32G0xx/Include"/>
+							<listOptionValue builtIn="false" value="../Drivers/CMSIS/Include"/>
+							<listOptionValue builtIn="false" value="../application"/>
+						</option>
+					</tool>
+					<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.linker.1581386675" name="MCU/MPU G++ Linker" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.linker">
+						<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.linker.option.script.459540561" name="Linker Script (-T)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.linker.option.script" value="${workspace_loc:/${ProjName}/STM32G030K8TX_FLASH.ld}" valueType="string"/>
+					</tool>
+				</toolChain>
+			</storageModule>
+		</cconfiguration>
+		<cconfiguration id="com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.release.1667331923">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.release.1667331923" moduleId="org.eclipse.cdt.core.settings" name="Release">
+				<toolChain id="com.st.stm32cube.ide.mcu.gnu.managedbuild.toolchain.exe.release.660675350" name="MCU ARM GCC" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.toolchain.exe.release">
+					<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.116613431" name="MCU/MPU GCC Compiler" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler">
+						<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.definedsymbols.373826072" name="Define symbols (-D)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.definedsymbols" valueType="definedSymbols">
+							<listOptionValue builtIn="false" value="NDEBUG"/>
+							<listOptionValue builtIn="false" value="USE_HAL_DRIVER"/>
+							<listOptionValue builtIn="false" value="STM32G030xx"/>
+						</option>
+						<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includepaths.2017786803" name="Include paths (-I)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includepaths" valueType="includePath">
+							<listOptionValue builtIn="false" value="../Core/Inc"/>
+							<listOptionValue builtIn="false" value="../Drivers/STM32G0xx_HAL_Driver/Inc"/>
+							<listOptionValue builtIn="false" value="../Drivers/STM32G0xx_HAL_Driver/Inc/Legacy"/>
+							<listOptionValue builtIn="false" value="../Drivers/CMSIS/Device/ST/STM32G0xx/Include"/>
+							<listOptionValue builtIn="false" value="../Drivers/CMSIS/Include"/>
+						</option>
+					</tool>
+					<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.315528115" name="MCU/MPU G++ Compiler" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler">
+						<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.option.definedsymbols.2103628480" name="Define symbols (-D)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.option.definedsymbols" valueType="definedSymbols">
+							<listOptionValue builtIn="false" value="NDEBUG"/>
+							<listOptionValue builtIn="false" value="USE_HAL_DRIVER"/>
+							<listOptionValue builtIn="false" value="STM32G030xx"/>
+						</option>
+						<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.option.includepaths.293154313" name="Include paths (-I)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.option.includepaths" valueType="includePath">
+							<listOptionValue builtIn="false" value="../Core/Inc"/>
+							<listOptionValue builtIn="false" value="../Drivers/STM32G0xx_HAL_Driver/Inc"/>
+							<listOptionValue builtIn="false" value="../Drivers/STM32G0xx_HAL_Driver/Inc/Legacy"/>
+							<listOptionValue builtIn="false" value="../Drivers/CMSIS/Device/ST/STM32G0xx/Include"/>
+							<listOptionValue builtIn="false" value="../Drivers/CMSIS/Include"/>
+						</option>
+					</tool>
+					<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.linker.1101462952" name="MCU/MPU G++ Linker" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.linker">
+						<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.linker.option.script.486035973" name="Linker Script (-T)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.linker.option.script" value="${workspace_loc:/${ProjName}/STM32G030K8TX_FLASH.ld}" valueType="string"/>
+					</tool>
+				</toolChain>
+			</storageModule>
+		</cconfiguration>
+	</storageModule>
+	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+		<project id="stm32_project.null.656151201" name="stm32_project"/>
+	</storageModule>
+	<sourceEntries>
+		<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
+		<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
+		<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Application"/>
+	</sourceEntries>
+</cproject>
