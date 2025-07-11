@@ -4,8 +4,8 @@ import subprocess
 import textwrap
 from unittest.mock import patch, mock_open
 
-from eclipse_to_make.parser import EclipseProjectParser
-from eclipse_to_make.generator import MakefileGenerator
+from cube_make.parser import EclipseProjectParser
+from cube_make.generator import MakefileGenerator
 from pathlib import Path
 
 # --- Fixtures for test data ---

@@ -1,12 +1,12 @@
 import sys
 import os
-from eclipse_to_make.parser import EclipseProjectParser
-from eclipse_to_make.generator import MakefileGenerator
+from cube_make.parser import EclipseProjectParser
+from cube_make.generator import MakefileGenerator
 
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: eclipse_to_make <path_to_eclipse_project>")
+        print("Usage: cube_make <path_to_stm32_cube_eclipse_project>")
         sys.exit(1)
     project_path = sys.argv[1]
     print(f"Generating Makefile for project at: {project_path}")

@@ -2,8 +2,8 @@ import pytest
 import subprocess
 from pathlib import Path
 
-from eclipse_to_make.parser import EclipseProjectParser
-from eclipse_to_make.generator import MakefileGenerator
+from cube_make.parser import EclipseProjectParser
+from cube_make.generator import MakefileGenerator
 
 # List of example project paths
 EXAMPLE_PROJECT_PATHS = [
