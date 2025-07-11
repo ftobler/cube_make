@@ -1,10 +1,11 @@
 *.egg-info
 .venv/
-tests/stm32_project/Debug/
-tests/stm32_project/build/
-tests/stm32_project/.settings/
-tests/stm32_project/Drivers/
-tests/stm32_project/makefile
+tests/*project*/Debug/
+tests/*project*/build/
+tests/*project*/.settings/
+tests/*project*/Drivers/
+tests/*project*/makefile
 .mypy_cache/
+.pytest_cache/
 package-lock.json
 __pycache__
