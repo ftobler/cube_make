@@ -129,7 +129,11 @@ def test_generator_produces_valid_makefile(stm32_project_path):
         parser.source_paths,
         parser.include_paths,
         parser.defines,
-        parser.linker_script
+        parser.linker_script,
+        prebuild_step="",
+        postbuild_step="",
+        convert_hex=False,
+        convert_bin=False
     )
     makefile_content = generator.generate()
 
@@ -171,7 +175,11 @@ def test_compile_makefile(stm32_project_path):
         parser.source_paths,
         parser.include_paths,
         parser.defines,
-        parser.linker_script
+        parser.linker_script,
+        prebuild_step="",
+        postbuild_step="",
+        convert_hex=False,
+        convert_bin=False
     )
     makefile_content = generator.generate()
 

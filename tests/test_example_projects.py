@@ -36,7 +36,11 @@ def test_compile_example_project(project_path):
         parser.source_paths,
         parser.include_paths,
         parser.defines,
-        parser.linker_script
+        parser.linker_script,
+        parser.prebuild_step,
+        parser.postbuild_step,
+        parser.convert_hex,
+        parser.convert_bin
     )
     makefile_content = generator.generate()
 
@@ -74,6 +78,12 @@ def test_compile_example_project(project_path):
         # Check if the ELF file was created
         elf_file = project_path / "build" / f"{parser.project_name}.elf"
         assert elf_file.exists(), f"ELF file not found for {project_path}: {elf_file}"
+
+        if project_path.name == "stm32_project_g030":
+            hex_file = project_path / "build" / f"{parser.project_name}.hex"
+            bin_file = project_path / "build" / f"{parser.project_name}.bin"
+            assert hex_file.exists(), f"HEX file not found for {project_path}: {hex_file}"
+            assert bin_file.exists(), f"BIN file not found for {project_path}: {bin_file}"
 
     except subprocess.CalledProcessError as e:
         pytest.fail(f"Makefile compilation failed: {e.stderr}")

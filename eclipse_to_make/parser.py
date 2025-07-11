@@ -11,6 +11,10 @@ class EclipseProjectParser:
         self.include_paths = []
         self.defines = []
         self.linker_script = ""
+        self.prebuild_step = ""
+        self.postbuild_step = ""
+        self.convert_hex = False
+        self.convert_bin = False
 
     def parse(self):
         tree = ET.parse(self.cproject_path)
@@ -20,6 +24,19 @@ class EclipseProjectParser:
         project_element = root.find(".//project")
         if project_element is not None:
             self.project_name = project_element.get("name", "")
+
+        # Extract pre and post build steps
+        configuration_element = root.find(".//configuration")
+        if configuration_element is not None:
+            self.prebuild_step = configuration_element.get("prebuildStep", "")
+            self.postbuild_step = configuration_element.get("postbuildStep", "")
+
+        # Extract hex and bin conversion flags
+        for option in root.findall(".//option"):
+            if option.get("superClass") == "com.st.stm32cube.ide.mcu.gnu.managedbuild.option.converthex":
+                self.convert_hex = (option.get("value") == "true")
+            elif option.get("superClass") == "com.st.stm32cube.ide.mcu.gnu.managedbuild.option.convertbinary":
+                self.convert_bin = (option.get("value") == "true")
 
         # Extract source paths (deduplicate them)
         raw_source_paths = []
