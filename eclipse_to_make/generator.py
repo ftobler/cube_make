@@ -127,4 +127,4 @@ clean:
         if len(file_list) == 0:
             return f"# {key} = <list is empty>"
         formatted_list = [f"{prefix}{item}" for item in file_list]
-        return f"{key} = " + (f" {backdash}{newline}    ".join(formatted_list))
+        return f"{key} = " + (f" {backdash}{newline}{tab}".join([""] + formatted_list))
