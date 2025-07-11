@@ -117,6 +117,18 @@ def test_parser_extracts_linker_script(stm32_project_path):
     parser.parse()
     assert parser.linker_script == "STM32G030K8TX_FLASH.ld"
 
+
+def test_parser_extracts_optimization_level(stm32_project_path):
+    parser = EclipseProjectParser(str(stm32_project_path))
+    parser.parse()
+    assert parser.optimization_level == "com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level.value.o3"
+
+
+def test_parser_extracts_float_abi(stm32_project_path):
+    parser = EclipseProjectParser(str(stm32_project_path))
+    parser.parse()
+    assert parser.float_abi == "com.st.stm32cube.ide.mcu.gnu.managedbuild.option.floatabi.value.hard"
+
 # --- Tests for MakefileGenerator ---
 
 
@@ -133,7 +145,9 @@ def test_generator_produces_valid_makefile(stm32_project_path):
         prebuild_step="",
         postbuild_step="",
         convert_hex=False,
-        convert_bin=False
+        convert_bin=False,
+        optimization_level="",
+        float_abi=""
     )
     makefile_content = generator.generate()
 
@@ -179,7 +193,9 @@ def test_compile_makefile(stm32_project_path):
         prebuild_step="",
         postbuild_step="",
         convert_hex=False,
-        convert_bin=False
+        convert_bin=False,
+        optimization_level="",
+        float_abi=""
     )
     makefile_content = generator.generate()
 

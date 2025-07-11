@@ -15,6 +15,13 @@ class EclipseProjectParser:
         self.postbuild_step = ""
         self.convert_hex = False
         self.convert_bin = False
+        self.optimization_level = ""
+        self.float_abi = ""
+        self.use_function_sections = False
+        self.use_data_sections = False
+        self.use_gc_sections = False
+        self.specs_nano = False
+        self.specs_nosys = False
 
     def parse(self):
         tree = ET.parse(self.cproject_path)
@@ -49,7 +56,7 @@ class EclipseProjectParser:
         unique_include_paths = set()
         unique_defines = set()
 
-        # Extract include paths and defines from all toolchains
+        # Extract include paths, defines and optimization level from all toolchains
         for tool_chain in root.findall(".//toolChain"):
             for tool in tool_chain.findall("tool"):
                 for option in tool.findall("option"):
@@ -59,6 +66,10 @@ class EclipseProjectParser:
                     elif option.get("name") == "Define symbols (-D)":
                         for value in option.findall("listOptionValue"):
                             unique_defines.add(value.get("value"))
+                    elif option.get("superClass") == "com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level":
+                        self.optimization_level = option.get("value")
+                    elif option.get("superClass") == "com.st.stm32cube.ide.mcu.gnu.managedbuild.option.floatabi":
+                        self.float_abi = option.get("value")
 
         self.include_paths = sorted(list(unique_include_paths))
         self.defines = sorted(list(unique_defines))
@@ -93,3 +104,4 @@ if __name__ == '__main__':
     print(f"Include Paths: {parser.include_paths}")
     print(f"Defines: {parser.defines}")
     print(f"Linker Script: {parser.linker_script}")
+    print(f"Optimization Level: {parser.optimization_level}")

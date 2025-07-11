@@ -26,7 +26,13 @@ def main():
         parser.source_paths,
         parser.include_paths,
         parser.defines,
-        parser.linker_script
+        parser.linker_script,
+        parser.prebuild_step,
+        parser.postbuild_step,
+        parser.convert_hex,
+        parser.convert_bin,
+        parser.optimization_level,
+        parser.float_abi
     )
     makefile_content = generator.generate()
 
