@@ -29,7 +29,7 @@ def main():
     )
     makefile_content = generator.generate()
 
-    output_path = os.path.join(project_path, "Makefile")
+    output_path = os.path.join(project_path, "makefile")
     with open(output_path, "w") as f:
         f.write(makefile_content)
     print(f"Makefile generated at: {output_path}")

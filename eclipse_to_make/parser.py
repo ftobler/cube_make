@@ -61,11 +61,8 @@ class EclipseProjectParser:
                     linker_script_raw = option.get("value", "")
                     # Resolve ${workspace_loc:/${ProjName}/...} to a relative path
                     if linker_script_raw.startswith("${workspace_loc:/"):
-                        # Find the end of the project name part
-                        start_index = len("${workspace_loc:/") + \
-                                      len(self.project_name) + 1
-                        # Remove the prefix and the trailing '}'
-                        self.linker_script = linker_script_raw[start_index:-1]
+                        # Extract the filename after the last '/' and remove the trailing '}'
+                        self.linker_script = linker_script_raw.split('/')[-1][:-1]
                     else:
                         self.linker_script = linker_script_raw
 

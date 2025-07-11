@@ -80,6 +80,8 @@ OBJECTS = $(C_OBJECTS) $(CPP_OBJECTS) $(S_OBJECTS)
 .PHONY: all clean
 
 all: $(BUILD_DIR)/$(PROJECT_NAME).elf
+
+$(BUILD_DIR)/$(PROJECT_NAME).elf: $(OBJECTS)
 	@mkdir -p $(@D)
 	$(LD) $(LDFLAGS) $(OBJECTS) -o $@
 	$(SIZE) $@
