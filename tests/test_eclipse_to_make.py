@@ -163,5 +163,37 @@ def test_generator_produces_valid_makefile(stm32_project_path):
 
 
 def test_compile_makefile(stm32_project_path):
-    # TODO: Implement a test that compiles using the generated Makefile
-    pass
+    parser = EclipseProjectParser(str(stm32_project_path))
+    parser.parse()
+    generator = MakefileGenerator(
+        str(stm32_project_path),
+        parser.project_name,
+        parser.source_paths,
+        parser.include_paths,
+        parser.defines,
+        parser.linker_script
+    )
+    makefile_content = generator.generate()
+
+    makefile_path = stm32_project_path / "makefile"
+    makefile_path.write_text(makefile_content)
+
+    try:
+        # Run make in the project directory
+        result = subprocess.run(
+            ["make", "-C", str(stm32_project_path)],
+            capture_output=True,
+            text=True,
+            check=True
+        )
+        assert result.returncode == 0, f"Makefile compilation failed: {result.stderr}"
+        assert "error:" not in result.stderr.lower(), f"Compilation errors found: {result.stderr}"
+
+        # Check if the ELF file was created
+        elf_file = stm32_project_path / "build" / f"{parser.project_name}.elf"
+        assert elf_file.exists(), f"ELF file not found: {elf_file}"
+
+    except subprocess.CalledProcessError as e:
+        pytest.fail(f"Makefile compilation failed: {e.stderr}")
+    except FileNotFoundError:
+        pytest.fail("Make command not found. Ensure 'make' is installed and in your PATH.")
