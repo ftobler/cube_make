@@ -1,2 +1,0 @@
-../application/app.c:19:6:app_init	8	static
-../application/app.c:25:6:app_loop	8	static
