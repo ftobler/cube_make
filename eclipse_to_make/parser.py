@@ -25,7 +25,7 @@ class EclipseProjectParser:
         for entry in root.findall(".//sourceEntries/entry"):
             if entry.get("kind") == "sourcePath":
                 raw_source_paths.append(entry.get("name"))
-        self.source_paths = list(set(raw_source_paths))
+        self.source_paths = sorted(list(set(raw_source_paths)))
 
         # Use sets to store unique include paths and defines
         unique_include_paths = set()
