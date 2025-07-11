@@ -142,7 +142,7 @@ def test_generator_produces_valid_makefile(stm32_project_path):
     assert "C_DEFINES =" in makefile_content
     assert f"LD_SCRIPT = {parser.linker_script}" in makefile_content
     assert "all: $(BUILD_DIR)/$(PROJECT_NAME).elf" in makefile_content
-    assert "\t@mkdir -p $(@D)" in makefile_content  # Check for tab indentation
+    assert "	@mkdir -p $(@D)" in makefile_content  # Check for tab indentation
 
     # Write the Makefile to a temporary location and try to parse it with make -n
     makefile_path = stm32_project_path / "makefile"
@@ -157,7 +157,7 @@ def test_generator_produces_valid_makefile(stm32_project_path):
             check=True
         )
         assert result.returncode == 0
-        assert "***" not in result.stderr # Check for common Makefile errors
+        assert "***" not in result.stderr  # Check for common Makefile errors
     except subprocess.CalledProcessError as e:
         pytest.fail(f"Generated Makefile has syntax errors or other issues: {e.stderr}")
 

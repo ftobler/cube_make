@@ -8,6 +8,7 @@ from eclipse_to_make.generator import MakefileGenerator
 # List of example project paths
 EXAMPLE_PROJECT_PATHS = [
     pytest.param(Path("tests/stm32_project_g030"), id="stm32_project_g030"),
+    pytest.param(Path("tests/stm32_project_l412"), id="stm32_project_l412"),
 ]
 
 

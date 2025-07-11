@@ -3,6 +3,7 @@ import os
 from eclipse_to_make.parser import EclipseProjectParser
 from eclipse_to_make.generator import MakefileGenerator
 
+
 def main():
     if len(sys.argv) < 2:
         print("Usage: eclipse_to_make <path_to_eclipse_project>")
@@ -33,6 +34,7 @@ def main():
     with open(output_path, "w") as f:
         f.write(makefile_content)
     print(f"Makefile generated at: {output_path}")
+
 
 if __name__ == "__main__":
     main()

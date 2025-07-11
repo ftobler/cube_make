@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as ET
 import os
 
+
 class EclipseProjectParser:
     def __init__(self, project_path):
         self.project_path = project_path

@@ -1,9 +1,10 @@
 import subprocess
 import pytest
 
+
 def test_mypy_passes():
     try:
         subprocess.run(["mypy", "eclipse_to_make/", "tests/"], capture_output=True, check=True, text=True)
     except subprocess.CalledProcessError as e:
-        pytest.fail(f"mypy failed: {e.stdout}\n{e.stderr}")
-
+        pytest.fail(f"""mypy failed: {e.stdout}
+{e.stderr}""")
