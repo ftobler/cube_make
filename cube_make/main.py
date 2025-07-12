@@ -25,6 +25,7 @@ def main():
     print(f"convert_bin: {parser.convert_bin}")
     print(f"optimization_level: {parser.optimization_level}")
     print(f"float_abi: {parser.float_abi}")
+    print(f"cpu_arch: {parser.cpu_arch}")
 
     generator = MakefileGenerator(
         project_path,
@@ -38,7 +39,8 @@ def main():
         parser.convert_hex,
         parser.convert_bin,
         parser.optimization_level,
-        parser.float_abi
+        parser.float_abi,
+        parser.cpu_arch
     )
     makefile_content = generator.generate()
 

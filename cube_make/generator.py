@@ -7,7 +7,7 @@ tab = "\t"
 class MakefileGenerator:
     def __init__(self, project_path, project_name, source_paths, include_paths,
                  defines, linker_script, prebuild_step, postbuild_step,
-                 convert_hex, convert_bin, optimization_level, float_abi):
+                 convert_hex, convert_bin, optimization_level, float_abi, cpu_arch):
         self.project_path = project_path
         self.project_name = project_name
         self.source_paths = source_paths
@@ -20,6 +20,7 @@ class MakefileGenerator:
         self.convert_bin = convert_bin
         self.optimization_level = optimization_level
         self.float_abi = float_abi
+        self.cpu_arch = cpu_arch
 
     def _get_optimization_flag(self):
         if self.optimization_level == "com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level.value.o0":
@@ -129,9 +130,12 @@ SIZE = arm-none-eabi-size
 # Flags
 OPT_LEVEL = {opt_level_flag}
 FLOAT_ABI_FLAG = {float_abi_flag}
+CPU_ARCH_FLAG = -mcpu={self.cpu_arch}
+
 C_FLAGS = \\
-    -mcpu=cortex-m0plus \\
+    $(CPU_ARCH_FLAG) \\
     -std=gnu11 \\
+    -g3 \\
     -ffunction-sections \\
     -fdata-sections \\
     -Wall \\
@@ -140,9 +144,11 @@ C_FLAGS = \\
     -mthumb \\
     $(OPT_LEVEL) \\
     $(FLOAT_ABI_FLAG)
+
 CPP_FLAGS = \\
-    -mcpu=cortex-m0plus \\
+    $(CPU_ARCH_FLAG) \\
     -std=gnu++14 \\
+    -g3 \\
     -ffunction-sections \\
     -fdata-sections \\
     -fno-exceptions \\
@@ -154,11 +160,13 @@ CPP_FLAGS = \\
     -mthumb \\
     $(OPT_LEVEL) \\
     $(FLOAT_ABI_FLAG)
+
 AS_FLAGS = \\
-    -mcpu=cortex-m0plus $(FLOAT_ABI_FLAG) -mthumb
+    $(CPU_ARCH_FLAG) $(FLOAT_ABI_FLAG) -mthumb
+
 LD_FLAGS = \\
     -T$(LD_SCRIPT) \\
-    -mcpu=cortex-m0plus \\
+    $(CPU_ARCH_FLAG) \\
     --specs=nosys.specs \\
     -Wl,--gc-sections \\
     -static \\
@@ -219,5 +227,15 @@ clean:
         newline = "\n"
         if len(file_list) == 0:
             return f"# {key} = <list is empty>"
-        formatted_list = [f"{prefix}{item}" for item in file_list]
-        return f"{key} = " + (f" {backdash}{newline}{tab}".join([""] + formatted_list))
+
+        # formatted_list = [f"{prefix}{item}" for item in file_list]
+        formatted_list = []
+        for item in file_list:
+            # Escape make-unsafe characters by quoting the item
+            if item == "":
+                continue
+            if any(c in item for c in [' ', '(', ')', '$', '#', '&', ';', '|', '<', '>', '*', '?', '[', ']', '{', '}', '\\']):
+                formatted_list.append(f'"{prefix}{item}"')
+            else:
+                formatted_list.append(f"{prefix}{item}")
+        return f"{key} = {backdash}{newline}{tab}" + (f" {backdash}{newline}{tab}".join(formatted_list))

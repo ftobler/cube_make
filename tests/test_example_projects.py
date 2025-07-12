@@ -29,6 +29,11 @@ def test_compile_example_project(project_path):
     parser = EclipseProjectParser(str(project_path))
     parser.parse()
 
+    if project_path.name == "stm32_project_g030":
+        assert parser.cpu_arch == "cortex-m0plus", "Expected CPU architecture for stm32_project_g030 is cortex-m0plus"
+    if project_path.name == "stm32_project_l412":
+        assert parser.cpu_arch == "cortex-m4", "Expected CPU architecture for stm32_project_l412 is cortex-m4"
+
     # Generate the Makefile
     generator = MakefileGenerator(
         str(project_path),
@@ -42,7 +47,8 @@ def test_compile_example_project(project_path):
         parser.convert_hex,
         parser.convert_bin,
         parser.optimization_level,
-        parser.float_abi
+        parser.float_abi,
+        parser.cpu_arch
     )
     makefile_content = generator.generate()
 

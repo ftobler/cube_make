@@ -147,7 +147,8 @@ def test_generator_produces_valid_makefile(stm32_project_path):
         convert_hex=False,
         convert_bin=False,
         optimization_level="",
-        float_abi=""
+        float_abi="",
+        cpu_arch="cortex-m0plus"
     )
     makefile_content = generator.generate()
 
@@ -195,7 +196,8 @@ def test_compile_makefile(stm32_project_path):
         convert_hex=False,
         convert_bin=False,
         optimization_level="",
-        float_abi=""
+        float_abi="",
+        cpu_arch="cortex-m0plus"
     )
     makefile_content = generator.generate()
 

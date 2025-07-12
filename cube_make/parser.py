@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 import os
+import re
 
 
 class EclipseProjectParser:
@@ -17,11 +18,33 @@ class EclipseProjectParser:
         self.convert_bin = False
         self.optimization_level = ""
         self.float_abi = ""
+        self.cpu_arch = ""
         self.use_function_sections = False
         self.use_data_sections = False
         self.use_gc_sections = False
         self.specs_nano = False
         self.specs_nosys = False
+
+    def _find_cpu_arch(self):
+        """Finds the CPU architecture from the startup file."""
+        for source_path in self.source_paths:
+            full_path = os.path.join(self.project_path, source_path)
+            for root, _, files in os.walk(full_path):
+                for file in files:
+                    if file.endswith(".s"):
+                        startup_file_path = os.path.join(root, file)
+                        try:
+                            with open(startup_file_path, "r", encoding='utf-8') as f:
+                                content = f.read()
+                                # Use regex to find .cpu directive
+                                match = re.search(r"^\s*\.cpu\s+([a-zA-Z0-9\.\-+]+)", content, re.MULTILINE)
+                                if match:
+                                    self.cpu_arch = match.group(1)
+                                    return  # Exit after finding the first one
+                        except (IOError, UnicodeDecodeError):
+                            # Ignore files that can't be read
+                            pass
+        assert self.cpu_arch != "", "No CPU architecture found in startup files. Create a *.s file with the line '.cpu cortex-m0plus'."
 
     def parse(self):
         tree = ET.parse(self.cproject_path)
@@ -51,6 +74,8 @@ class EclipseProjectParser:
             if entry.get("kind") == "sourcePath":
                 raw_source_paths.append(entry.get("name"))
         self.source_paths = sorted(list(set(raw_source_paths)))
+
+        self._find_cpu_arch()
 
         # Use sets to store unique include paths and defines
         unique_include_paths = set()
@@ -105,3 +130,4 @@ if __name__ == '__main__':
     print(f"Defines: {parser.defines}")
     print(f"Linker Script: {parser.linker_script}")
     print(f"Optimization Level: {parser.optimization_level}")
+    print(f"CPU arch: {parser.cpu_arch}")
