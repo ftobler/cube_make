@@ -35,20 +35,10 @@ def test_compile_example_project(project_path):
         assert parser.cpu_arch == "cortex-m4", "Expected CPU architecture for stm32_project_l412 is cortex-m4"
 
     # Generate the Makefile
+    config = parser.get_config()
     generator = MakefileGenerator(
         str(project_path),
-        parser.project_name,
-        parser.source_paths,
-        parser.include_paths,
-        parser.defines,
-        parser.linker_script,
-        parser.prebuild_step,
-        parser.postbuild_step,
-        parser.convert_hex,
-        parser.convert_bin,
-        parser.optimization_level,
-        parser.float_abi,
-        parser.cpu_arch
+        config
     )
     makefile_content = generator.generate()
 

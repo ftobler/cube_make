@@ -2,25 +2,25 @@ import os
 
 
 tab = "\t"
+backdash = "\\"
+newline = "\n"
 
 
 class MakefileGenerator:
-    def __init__(self, project_path, project_name, source_paths, include_paths,
-                 defines, linker_script, prebuild_step, postbuild_step,
-                 convert_hex, convert_bin, optimization_level, float_abi, cpu_arch):
+    def __init__(self, project_path, config):
         self.project_path = project_path
-        self.project_name = project_name
-        self.source_paths = source_paths
-        self.include_paths = include_paths
-        self.defines = defines
-        self.linker_script = linker_script
-        self.prebuild_step = prebuild_step
-        self.postbuild_step = postbuild_step
-        self.convert_hex = convert_hex
-        self.convert_bin = convert_bin
-        self.optimization_level = optimization_level
-        self.float_abi = float_abi
-        self.cpu_arch = cpu_arch
+        self.project_name = config["project_name"]
+        self.source_paths = config["source_paths"]
+        self.include_paths = config["include_paths"]
+        self.defines = config["defines"]
+        self.linker_script = config["linker_script"]
+        self.prebuild_step = config["prebuild_step"]
+        self.postbuild_step = config["postbuild_step"]
+        self.convert_hex = config["convert_hex"]
+        self.convert_bin = config["convert_bin"]
+        self.optimization_level = config["optimization_level"]
+        self.float_abi = config["float_abi"]
+        self.cpu_arch = config["cpu_arch"]
 
     def _get_optimization_flag(self):
         if self.optimization_level == "com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level.value.o0":
@@ -223,8 +223,6 @@ clean:
         return makefile_content
 
     def format_file_list(self, key: str, file_list: list[str], prefix: str = "") -> str:
-        backdash = "\\"
-        newline = "\n"
         if len(file_list) == 0:
             return f"# {key} = <list is empty>"
 

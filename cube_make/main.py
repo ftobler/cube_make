@@ -24,7 +24,6 @@ def load_config(path: str) -> dict:
 
 
 def verify_config(config: dict):
-    # Example: check required keys
     required_keys = [
         "project_name", "source_paths", "include_paths", "defines",
         "linker_script", "optimization_level", "cpu_arch"
@@ -61,7 +60,7 @@ def main():
 
     parser = EclipseProjectParser(project_path)
     parser.parse()
-    parsed_config = parser.config()
+    parsed_config = parser.get_config()
 
     config = parsed_config | global_config | local_config   # last one wins
 
@@ -70,18 +69,7 @@ def main():
 
     generator = MakefileGenerator(
         project_path,
-        config.project_name,
-        config.source_paths,
-        config.include_paths,
-        config.defines,
-        config.linker_script,
-        config.prebuild_step,
-        config.postbuild_step,
-        config.convert_hex,
-        config.convert_bin,
-        config.optimization_level,
-        config.float_abi,
-        config.cpu_arch
+        config
     )
     makefile_content = generator.generate()
 

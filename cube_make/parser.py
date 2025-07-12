@@ -120,7 +120,7 @@ class EclipseProjectParser:
                     else:
                         self.linker_script = linker_script_raw
 
-    def config(self) -> dict:
+    def get_config(self) -> dict:
         return {
             "project_name": self.project_name,
             "source_paths": self.source_paths,

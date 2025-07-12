@@ -135,20 +135,10 @@ def test_parser_extracts_float_abi(stm32_project_path):
 def test_generator_produces_valid_makefile(stm32_project_path):
     parser = EclipseProjectParser(str(stm32_project_path))
     parser.parse()
+    config = parser.get_config()
     generator = MakefileGenerator(
         str(stm32_project_path),
-        parser.project_name,
-        parser.source_paths,
-        parser.include_paths,
-        parser.defines,
-        parser.linker_script,
-        parser.prebuild_step,
-        parser.postbuild_step,
-        parser.convert_hex,
-        parser.convert_bin,
-        parser.optimization_level,
-        parser.float_abi,
-        parser.cpu_arch
+        config
     )
     makefile_content = generator.generate()
 
@@ -184,20 +174,10 @@ def test_generator_produces_valid_makefile(stm32_project_path):
 def test_compile_makefile(stm32_project_path):
     parser = EclipseProjectParser(str(stm32_project_path))
     parser.parse()
+    config = parser.get_config()
     generator = MakefileGenerator(
         str(stm32_project_path),
-        parser.project_name,
-        parser.source_paths,
-        parser.include_paths,
-        parser.defines,
-        parser.linker_script,
-        parser.prebuild_step,
-        parser.postbuild_step,
-        parser.convert_hex,
-        parser.convert_bin,
-        parser.optimization_level,
-        parser.float_abi,
-        parser.cpu_arch
+        config
     )
     makefile_content = generator.generate()
 
