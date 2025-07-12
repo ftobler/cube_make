@@ -1,46 +1,87 @@
 import sys
 import os
+import json
 from cube_make.parser import EclipseProjectParser
 from cube_make.generator import MakefileGenerator
 
 
-def main():
+CONFIG_FILENAME = "cube_make.json"
+
+
+def extract_project_path() -> str:
     if len(sys.argv) < 2:
         print("Usage: cube_make <path_to_stm32_cube_eclipse_project>")
         sys.exit(1)
-    project_path = sys.argv[1]
+    return sys.argv[1]
+
+
+def load_config(path: str) -> dict:
+    config_path = os.path.join(path, CONFIG_FILENAME)
+    if os.path.exists(config_path):
+        with open(config_path, 'r') as f:
+            return json.load(f)
+    return {}
+
+
+def verify_config(config: dict):
+    # Example: check required keys
+    required_keys = [
+        "project_name", "source_paths", "include_paths", "defines",
+        "linker_script", "optimization_level", "cpu_arch"
+    ]
+    missing = [key for key in required_keys if key not in config or config[key] is None]
+    if missing:
+        print(f"Config verification failed. Missing keys: {missing}")
+        sys.exit(1)
+    print("Config verification passed.")
+
+
+def print_config(config: dict):
+    print(f"project_name: {config.get('project_name')}")
+    print(f"source_paths: {config.get('source_paths')}")
+    print(f"include_paths: {config.get('include_paths')}")
+    print(f"defines: {config.get('defines')}")
+    print(f"linker_script: {config.get('linker_script')}")
+    print(f"prebuild_step: {config.get('prebuild_step')}")
+    print(f"postbuild_step: {config.get('postbuild_step')}")
+    print(f"convert_hex: {config.get('convert_hex')}")
+    print(f"convert_bin: {config.get('convert_bin')}")
+    print(f"optimization_level: {config.get('optimization_level')}")
+    print(f"float_abi: {config.get('float_abi')}")
+    print(f"cpu_arch: {config.get('cpu_arch')}")
+
+
+def main():
+    project_path = extract_project_path()
     print(f"Generating Makefile for project at: {project_path}")
+
+    global_config = load_config(".")
+
+    local_config = load_config(project_path)
 
     parser = EclipseProjectParser(project_path)
     parser.parse()
+    parsed_config = parser.config()
 
-    print(f"project_name: {parser.project_name}")
-    print(f"source_paths: {parser.source_paths}")
-    print(f"include_paths: {parser.include_paths}")
-    print(f"defines: {parser.defines}")
-    print(f"linker_script: {parser.linker_script}")
-    print(f"prebuild_step: {parser.prebuild_step}")
-    print(f"postbuild_step: {parser.postbuild_step}")
-    print(f"convert_hex: {parser.convert_hex}")
-    print(f"convert_bin: {parser.convert_bin}")
-    print(f"optimization_level: {parser.optimization_level}")
-    print(f"float_abi: {parser.float_abi}")
-    print(f"cpu_arch: {parser.cpu_arch}")
+    config = parsed_config | global_config | local_config   # last one wins
+
+    verify_config(config)
+    print_config(config)
 
     generator = MakefileGenerator(
         project_path,
-        parser.project_name,
-        parser.source_paths,
-        parser.include_paths,
-        parser.defines,
-        parser.linker_script,
-        parser.prebuild_step,
-        parser.postbuild_step,
-        parser.convert_hex,
-        parser.convert_bin,
-        parser.optimization_level,
-        parser.float_abi,
-        parser.cpu_arch
+        config.project_name,
+        config.source_paths,
+        config.include_paths,
+        config.defines,
+        config.linker_script,
+        config.prebuild_step,
+        config.postbuild_step,
+        config.convert_hex,
+        config.convert_bin,
+        config.optimization_level,
+        config.float_abi,
+        config.cpu_arch
     )
     makefile_content = generator.generate()
 

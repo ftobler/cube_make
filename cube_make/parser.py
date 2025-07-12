@@ -120,6 +120,22 @@ class EclipseProjectParser:
                     else:
                         self.linker_script = linker_script_raw
 
+    def config(self) -> dict:
+        return {
+            "project_name": self.project_name,
+            "source_paths": self.source_paths,
+            "include_paths": self.include_paths,
+            "defines": self.defines,
+            "linker_script": self.linker_script,
+            "prebuild_step": self.prebuild_step,
+            "postbuild_step": self.postbuild_step,
+            "convert_hex": self.convert_hex,
+            "convert_bin": self.convert_bin,
+            "optimization_level": self.optimization_level,
+            "float_abi": self.float_abi,
+            "cpu_arch": self.cpu_arch
+        }
+
 
 if __name__ == '__main__':
     parser = EclipseProjectParser("tests/stm32_project")
