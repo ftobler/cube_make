@@ -145,6 +145,7 @@ CPP_FLAGS = \
     -std=gnu++14 \
     -ffunction-sections \
     -fdata-sections \
+    -fno-unwind-tables \
     -fno-exceptions \
     -fno-rtti \
     -fno-use-cxa-atexit \
