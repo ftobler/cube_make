@@ -1,42 +1,42 @@
 import os
+from typing import List
+from cube_make.config import Config
 
 
 tab = "\t"
-backdash = "\\"
-newline = "\n"
 
 
 class MakefileGenerator:
-    def __init__(self, project_path, config):
+    def __init__(self, project_path: str, config: Config):
         self.project_path = project_path
         self.config = config
 
-    def _get_optimization_flag(self):
-        if self.config.optimization_level == "com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level.value.o0":
+    def _get_optimization_flag(self) -> str:
+        if self.config.optimization_level == "o0":
             return "-O0"
-        elif self.config.optimization_level == "com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level.value.o1":
+        elif self.config.optimization_level == "o1":
             return "-O1"
-        elif self.config.optimization_level == "com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level.value.o2":
+        elif self.config.optimization_level == "o2":
             return "-O2"
-        elif self.config.optimization_level == "com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level.value.o3":
+        elif self.config.optimization_level == "o3":
             return "-O3"
-        elif self.config.optimization_level == "com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level.value.os":
+        elif self.config.optimization_level == "os":
             return "-Os"
-        elif self.config.optimization_level == "com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level.value.ofast":
+        elif self.config.optimization_level == "ofast":
             return "-Ofast"
         else:
             return ""  # TODO either fail here or warn the user
 
-    def _get_float_abi_flag(self):
-        if self.config.float_abi == "com.st.stm32cube.ide.mcu.gnu.managedbuild.option.floatabi.value.hard":
+    def _get_float_abi_flag(self) -> str:
+        if self.config.float_abi == "hard":
             return "-mfloat-abi=hard"
-        elif self.config.float_abi == "com.st.stm32cube.ide.mcu.gnu.managedbuild.option.floatabi.value.soft":
+        elif self.config.float_abi == "soft":
             return "-mfloat-abi=soft"
         else:
             return ""
 
-    def _find_sources(self, extension):
-        found_files = []
+    def _find_sources(self, extension: str) -> List[str]:
+        found_files: List[str] = []
         for source_path in self.config.source_paths:
             full_path = os.path.join(self.project_path, source_path)
             for root, _, files in os.walk(full_path):
@@ -48,7 +48,7 @@ class MakefileGenerator:
         # application, then Core/Src, then Drivers
         return sorted(found_files)
 
-    def generate(self):
+    def generate(self) -> str:
         c_sources = self._find_sources('.c')
         cpp_sources = self._find_sources('.cpp')
         s_sources = self._find_sources('.s')
@@ -120,7 +120,6 @@ SIZE = arm-none-eabi-size
 OPT_LEVEL = {opt_level_flag}
 FLOAT_ABI_FLAG = {float_abi_flag}
 CPU_ARCH_FLAG = -mcpu={self.config.cpu_arch}
-
 C_FLAGS = \
     $(CPU_ARCH_FLAG) \
     -std=gnu11 \
@@ -209,21 +208,12 @@ clean:
 {tab}rm -rf $(BUILD_DIR)
 
 """
-
         return makefile_content
 
-    def format_file_list(self, key: str, file_list: list[str], prefix: str = "") -> str:
+    def format_file_list(self, key: str, file_list: List[str], prefix: str = "") -> str:
+        backdash = "\\"
+        newline = "\n"
         if len(file_list) == 0:
             return f"# {key} = <list is empty>"
-
-        # formatted_list = [f"{prefix}{item}" for item in file_list]
-        formatted_list = []
-        for item in file_list:
-            # Escape make-unsafe characters by quoting the item
-            if item == "":
-                continue
-            if any(c in item for c in [' ', '(', ')', '$', '#', '&', ';', '|', '<', '>', '*', '?', '[', ']', '{', '}']):
-                formatted_list.append(f'"{prefix}{item}"')
-            else:
-                formatted_list.append(f"{prefix}{item}")
-        return f"{key} = {backdash}{newline}{tab}" + (f" {backdash}{newline}{tab}".join(formatted_list))
+        formatted_list = [f"{prefix}{item}" for item in file_list]
+        return f"{key} = " + (f" {backdash}{newline}{tab}".join([""] + formatted_list))

@@ -1,31 +1,32 @@
 import xml.etree.ElementTree as ET
 import os
 import re
+from typing import List, Dict, Any
 
 
 class EclipseProjectParser:
-    def __init__(self, project_path):
+    def __init__(self, project_path: str):
         self.project_path = project_path
         self.cproject_path = os.path.join(project_path, ".cproject")
-        self.project_name = ""
-        self.source_paths = []
-        self.include_paths = []
-        self.defines = []
-        self.linker_script = ""
-        self.prebuild_step = ""
-        self.postbuild_step = ""
-        self.convert_hex = False
-        self.convert_bin = False
-        self.optimization_level = ""
-        self.float_abi = ""
-        self.cpu_arch = ""
-        self.use_function_sections = False
-        self.use_data_sections = False
-        self.use_gc_sections = False
-        self.specs_nano = False
-        self.specs_nosys = False
+        self.project_name: str = ""
+        self.source_paths: List[str] = []
+        self.include_paths: List[str] = []
+        self.defines: List[str] = []
+        self.linker_script: str = ""
+        self.prebuild_step: str = ""
+        self.postbuild_step: str = ""
+        self.convert_hex: bool = False
+        self.convert_bin: bool = False
+        self.optimization_level: str | None = None
+        self.float_abi: str | None = None
+        self.cpu_arch: str = ""
+        self.use_function_sections: bool = False
+        self.use_data_sections: bool = False
+        self.use_gc_sections: bool = False
+        self.specs_nano: bool = False
+        self.specs_nosys: bool = False
 
-    def _find_cpu_arch(self):
+    def _find_cpu_arch(self) -> None:
         """Finds the CPU architecture from the startup file."""
         for source_path in self.source_paths:
             full_path = os.path.join(self.project_path, source_path)
@@ -46,7 +47,7 @@ class EclipseProjectParser:
                             pass
         assert self.cpu_arch != "", "No CPU architecture found in startup files. Create a *.s file with the line '.cpu cortex-m0plus'."
 
-    def parse(self):
+    def parse(self) -> None:
         tree = ET.parse(self.cproject_path)
         root = tree.getroot()
 
@@ -69,17 +70,19 @@ class EclipseProjectParser:
                 self.convert_bin = (option.get("value") == "true")
 
         # Extract source paths (deduplicate them)
-        raw_source_paths = []
+        raw_source_paths: List[str] = []
         for entry in root.findall(".//sourceEntries/entry"):
             if entry.get("kind") == "sourcePath":
-                raw_source_paths.append(entry.get("name"))
+                name = entry.get("name")
+                if name is not None:
+                    raw_source_paths.append(name)
         self.source_paths = sorted(list(set(raw_source_paths)))
 
         self._find_cpu_arch()
 
         # Use sets to store unique include paths and defines
-        unique_include_paths = set()
-        unique_defines = set()
+        unique_include_paths: set[str] = set()
+        unique_defines: set[str] = set()
 
         # Extract include paths, defines and optimization level from all toolchains
         for tool_chain in root.findall(".//toolChain"):
@@ -87,14 +90,28 @@ class EclipseProjectParser:
                 for option in tool.findall("option"):
                     if option.get("name") == "Include paths (-I)":
                         for value in option.findall("listOptionValue"):
-                            unique_include_paths.add(value.get("value").replace("../", ""))
+                            val = value.get("value")
+                            if val is not None:
+                                unique_include_paths.add(val.replace("../", ""))
                     elif option.get("name") == "Define symbols (-D)":
                         for value in option.findall("listOptionValue"):
-                            unique_defines.add(value.get("value"))
+                            val = value.get("value")
+                            if val is not None:
+                                unique_defines.add(val)
                     elif option.get("superClass") == "com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level":
-                        self.optimization_level = option.get("value")
+                        optimization_level = option.get("value")
+                        if optimization_level:
+                            self.optimization_level = optimization_level.replace(
+                                "com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level.value.", ""
+                            )
+                        else:
+                            self.optimization_level = None
                     elif option.get("superClass") == "com.st.stm32cube.ide.mcu.gnu.managedbuild.option.floatabi":
-                        self.float_abi = option.get("value")
+                        float_abi = option.get("value")
+                        if float_abi:
+                            self.float_abi = float_abi.replace("com.st.stm32cube.ide.mcu.gnu.managedbuild.option.floatabi.value.", "")
+                        else:
+                            self.float_abi = None
 
         self.include_paths = sorted(list(unique_include_paths))
         self.defines = sorted(list(unique_defines))
@@ -120,8 +137,8 @@ class EclipseProjectParser:
                     else:
                         self.linker_script = linker_script_raw
 
-    def get_config(self) -> dict:
-        return {
+    def get_config(self) -> Dict[str, Any]:
+        config = {
             "project_name": self.project_name,
             "source_paths": self.source_paths,
             "include_paths": self.include_paths,
@@ -131,19 +148,18 @@ class EclipseProjectParser:
             "postbuild_step": self.postbuild_step,
             "convert_hex": self.convert_hex,
             "convert_bin": self.convert_bin,
-            "optimization_level": self.optimization_level,
-            "float_abi": self.float_abi,
             "cpu_arch": self.cpu_arch
         }
+        if self.optimization_level is not None:
+            config["optimization_level"] = self.optimization_level
+        if self.float_abi is not None:
+            config["float_abi"] = self.float_abi
+        return config
 
 
 if __name__ == '__main__':
-    parser = EclipseProjectParser("tests/stm32_project")
+    import json
+    parser = EclipseProjectParser("tests/stm32_project_g030")
     parser.parse()
-    print(f"Project Name: {parser.project_name}")
-    print(f"Source Paths: {parser.source_paths}")
-    print(f"Include Paths: {parser.include_paths}")
-    print(f"Defines: {parser.defines}")
-    print(f"Linker Script: {parser.linker_script}")
-    print(f"Optimization Level: {parser.optimization_level}")
-    print(f"CPU arch: {parser.cpu_arch}")
+    config = parser.get_config()
+    print(json.dumps(config, indent=4))

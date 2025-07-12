@@ -122,13 +122,13 @@ def test_parser_extracts_linker_script(stm32_project_path):
 def test_parser_extracts_optimization_level(stm32_project_path):
     parser = EclipseProjectParser(str(stm32_project_path))
     parser.parse()
-    assert parser.optimization_level == "com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level.value.o3"
+    assert parser.optimization_level == "o3"
 
 
 def test_parser_extracts_float_abi(stm32_project_path):
     parser = EclipseProjectParser(str(stm32_project_path))
     parser.parse()
-    assert parser.float_abi == "com.st.stm32cube.ide.mcu.gnu.managedbuild.option.floatabi.value.soft"
+    assert parser.float_abi == "soft"
 
 # --- Tests for MakefileGenerator ---
 

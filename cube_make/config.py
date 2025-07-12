@@ -1,9 +1,11 @@
 
 import sys
+import json
+from typing import Any
 
 
 class Config:
-    def __init__(self, config_dict: dict):
+    def __init__(self, config_dict: dict[str, Any]):
         self.project_name = config_dict.get("project_name")
         self.source_paths = config_dict.get("source_paths", [])
         self.include_paths = config_dict.get("include_paths", [])
@@ -25,10 +27,18 @@ class Config:
             "include_paths",
             "defines",
             "linker_script",
+            "prebuild_step",
+            "postbuild_step",
+            "convert_hex",
+            "convert_bin",
             "optimization_level",
+            "float_abi",
             "cpu_arch",
         ]
         missing = [key for key in required_keys if getattr(self, key) is None]
         if missing:
             print(f"Config verification failed. Missing keys: {missing}")
             sys.exit(1)
+
+    def __str__(self):
+        return json.dumps(self.__dict__, indent=4)

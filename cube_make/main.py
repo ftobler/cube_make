@@ -1,6 +1,7 @@
 import sys
 import os
 import json
+from typing import Dict, Any
 from cube_make.parser import EclipseProjectParser
 from cube_make.generator import MakefileGenerator
 from cube_make.config import Config
@@ -16,7 +17,7 @@ def extract_project_path() -> str:
     return sys.argv[1]
 
 
-def load_config(path: str) -> dict:
+def load_config(path: str) -> Dict[str, Any]:
     config_path = os.path.join(path, CONFIG_FILENAME)
     if os.path.exists(config_path):
         with open(config_path, 'r') as f:
@@ -24,22 +25,11 @@ def load_config(path: str) -> dict:
     return {}
 
 
-def print_config(config: Config):
-    print(f"project_name: {config.project_name}")
-    print(f"source_paths: {config.source_paths}")
-    print(f"include_paths: {config.include_paths}")
-    print(f"defines: {config.defines}")
-    print(f"linker_script: {config.linker_script}")
-    print(f"prebuild_step: {config.prebuild_step}")
-    print(f"postbuild_step: {config.postbuild_step}")
-    print(f"convert_hex: {config.convert_hex}")
-    print(f"convert_bin: {config.convert_bin}")
-    print(f"optimization_level: {config.optimization_level}")
-    print(f"float_abi: {config.float_abi}")
-    print(f"cpu_arch: {config.cpu_arch}")
+def print_config(config: Config) -> None:
+    print(config)
 
 
-def main():
+def main() -> None:
     project_path = extract_project_path()
     print(f"Generating Makefile for project at: {project_path}")
 
@@ -69,7 +59,7 @@ def main():
     print(f"Makefile generated at: {output_path}")
 
 
-def main_console():
+def main_console() -> None:
     """Main entry point for console script."""
     main()
 
