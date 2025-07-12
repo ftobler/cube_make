@@ -4,6 +4,8 @@ from cube_make.config import Config
 
 
 tab = "\t"
+backslash = "\\"
+newline = "\n"
 
 
 class MakefileGenerator:
@@ -91,7 +93,9 @@ PROJECT_NAME = {self.config.project_name}
 
 # Source files
 {c_sources_var}
+
 {cpp_sources_var}
+
 {s_sources_var}
 
 # VPATH for source directories
@@ -120,46 +124,46 @@ SIZE = arm-none-eabi-size
 OPT_LEVEL = {opt_level_flag}
 FLOAT_ABI_FLAG = {float_abi_flag}
 CPU_ARCH_FLAG = -mcpu={self.config.cpu_arch}
-C_FLAGS = \
-    $(CPU_ARCH_FLAG) \
-    -std=gnu11 \
-    -g3 \
-    -ffunction-sections \
-    -fdata-sections \
-    -Wall \
-    -fstack-usage \
-    --specs=nano.specs \
-    -mthumb \
-    $(OPT_LEVEL) \
+C_FLAGS = {backslash}
+    $(CPU_ARCH_FLAG) {backslash}
+    -std=gnu11 {backslash}
+    -g3 {backslash}
+    -ffunction-sections {backslash}
+    -fdata-sections {backslash}
+    -Wall {backslash}
+    -fstack-usage {backslash}
+    --specs=nano.specs {backslash}
+    -mthumb {backslash}
+    $(OPT_LEVEL) {backslash}
     $(FLOAT_ABI_FLAG)
 
-CPP_FLAGS = \
-    $(CPU_ARCH_FLAG) \
-    -std=gnu++14 \
-    -g3 \
-    -ffunction-sections \
-    -fdata-sections \
-    -fno-exceptions \
-    -fno-rtti \
-    -fno-use-cxa-atexit \
-    -Wall \
-    -fstack-usage \
-    --specs=nano.specs \
-    -mthumb \
-    $(OPT_LEVEL) \
+CPP_FLAGS = {backslash}
+    $(CPU_ARCH_FLAG) {backslash}
+    -std=gnu++14 {backslash}
+    -g3 {backslash}
+    -ffunction-sections {backslash}
+    -fdata-sections {backslash}
+    -fno-exceptions {backslash}
+    -fno-rtti {backslash}
+    -fno-use-cxa-atexit {backslash}
+    -Wall {backslash}
+    -fstack-usage {backslash}
+    --specs=nano.specs {backslash}
+    -mthumb {backslash}
+    $(OPT_LEVEL) {backslash}
     $(FLOAT_ABI_FLAG)
 
-AS_FLAGS = \
+AS_FLAGS = {backslash}
     $(CPU_ARCH_FLAG) $(FLOAT_ABI_FLAG) -mthumb
 
-LD_FLAGS = \
-    -T$(LD_SCRIPT) \
-    $(CPU_ARCH_FLAG) \
-    --specs=nosys.specs \
-    -Wl,--gc-sections \
-    -static \
-    --specs=nano.specs \
-    -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group \
+LD_FLAGS = {backslash}
+    -T$(LD_SCRIPT) {backslash}
+    $(CPU_ARCH_FLAG) {backslash}
+    --specs=nosys.specs {backslash}
+    -Wl,--gc-sections {backslash}
+    -static {backslash}
+    --specs=nano.specs {backslash}
+    -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group {backslash}
     -mthumb $(OPT_LEVEL) $(FLOAT_ABI_FLAG)
 
 # Output directories
@@ -211,9 +215,7 @@ clean:
         return makefile_content
 
     def format_file_list(self, key: str, file_list: List[str], prefix: str = "") -> str:
-        backdash = "\\"
-        newline = "\n"
         if len(file_list) == 0:
             return f"# {key} = <list is empty>"
         formatted_list = [f"{prefix}{item}" for item in file_list]
-        return f"{key} = " + (f" {backdash}{newline}{tab}".join([""] + formatted_list))
+        return f"{key} = " + (f" {backslash}{newline}{tab}".join([""] + formatted_list))
