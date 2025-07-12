@@ -4,6 +4,7 @@ tests/*project*/Debug/
 tests/*project*/build/
 tests/*project*/.settings/
 tests/*project*/makefile
+tests/*project*/Makefile
 
 # you may re-activate drivers ignore but ONLY LCOALLY
 # tests/*project*/Drivers/
