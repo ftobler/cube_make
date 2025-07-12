@@ -3,8 +3,11 @@
 tests/*project*/Debug/
 tests/*project*/build/
 tests/*project*/.settings/
-tests/*project*/Drivers/
 tests/*project*/makefile
+
+# you may re-activate drivers ignore but ONLY LCOALLY
+# tests/*project*/Drivers/
+
 .mypy_cache/
 .pytest_cache/
 package-lock.json
