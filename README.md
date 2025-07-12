@@ -26,3 +26,6 @@ make clean
 make -j 16
 ```
 
+## Project
+
+The project is written in python. It has a lot of C code in the tests, so 99% of all code is just used as a compile test.
