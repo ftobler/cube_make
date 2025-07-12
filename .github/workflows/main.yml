@@ -39,7 +39,7 @@ jobs:
 
     - name: Test with pytest
       run: |
-        pip install pytest
+        pip install pytest mypy flake8
         pytest
       shell: bash
 
