@@ -127,7 +127,7 @@ def test_parser_extracts_optimization_level(stm32_project_path):
 def test_parser_extracts_float_abi(stm32_project_path):
     parser = EclipseProjectParser(str(stm32_project_path))
     parser.parse()
-    assert parser.float_abi == "com.st.stm32cube.ide.mcu.gnu.managedbuild.option.floatabi.value.hard"
+    assert parser.float_abi == "com.st.stm32cube.ide.mcu.gnu.managedbuild.option.floatabi.value.soft"
 
 # --- Tests for MakefileGenerator ---
 
@@ -142,13 +142,13 @@ def test_generator_produces_valid_makefile(stm32_project_path):
         parser.include_paths,
         parser.defines,
         parser.linker_script,
-        prebuild_step="",
-        postbuild_step="",
-        convert_hex=False,
-        convert_bin=False,
-        optimization_level="",
-        float_abi="",
-        cpu_arch="cortex-m0plus"
+        parser.prebuild_step,
+        parser.postbuild_step,
+        parser.convert_hex,
+        parser.convert_bin,
+        parser.optimization_level,
+        parser.float_abi,
+        parser.cpu_arch
     )
     makefile_content = generator.generate()
 
@@ -191,13 +191,13 @@ def test_compile_makefile(stm32_project_path):
         parser.include_paths,
         parser.defines,
         parser.linker_script,
-        prebuild_step="",
-        postbuild_step="",
-        convert_hex=False,
-        convert_bin=False,
-        optimization_level="",
-        float_abi="",
-        cpu_arch="cortex-m0plus"
+        parser.prebuild_step,
+        parser.postbuild_step,
+        parser.convert_hex,
+        parser.convert_bin,
+        parser.optimization_level,
+        parser.float_abi,
+        parser.cpu_arch
     )
     makefile_content = generator.generate()
 
