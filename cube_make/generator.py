@@ -234,7 +234,7 @@ clean:
             # Escape make-unsafe characters by quoting the item
             if item == "":
                 continue
-            if any(c in item for c in [' ', '(', ')', '$', '#', '&', ';', '|', '<', '>', '*', '?', '[', ']', '{', '}', '\\']):
+            if any(c in item for c in [' ', '(', ')', '$', '#', '&', ';', '|', '<', '>', '*', '?', '[', ']', '{', '}']):
                 formatted_list.append(f'"{prefix}{item}"')
             else:
                 formatted_list.append(f"{prefix}{item}")
