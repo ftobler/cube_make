@@ -129,42 +129,43 @@ SIZE = arm-none-eabi-size
 # Flags
 OPT_LEVEL = {opt_level_flag}
 FLOAT_ABI_FLAG = {float_abi_flag}
-C_FLAGS = \
-    -mcpu=cortex-m0plus \
-    -std=gnu11 \
-    -ffunction-sections \
-    -fdata-sections \
-    -Wall \
-    -fstack-usage \
-    --specs=nano.specs \
-    -mthumb \
-    $(OPT_LEVEL) \
+C_FLAGS = \\
+    -mcpu=cortex-m0plus \\
+    -std=gnu11 \\
+    -ffunction-sections \\
+    -fdata-sections \\
+    -Wall \\
+    -fstack-usage \\
+    --specs=nano.specs \\
+    -mthumb \\
+    $(OPT_LEVEL) \\
     $(FLOAT_ABI_FLAG)
-CPP_FLAGS = \
-    -mcpu=cortex-m0plus \
-    -std=gnu++14 \
-    -ffunction-sections \
-    -fdata-sections \
-    -fno-unwind-tables \
-    -fno-exceptions \
-    -fno-rtti \
-    -fno-use-cxa-atexit \
-    -Wall \
-    -fstack-usage \
-    --specs=nano.specs \
-    -mthumb \
-    $(OPT_LEVEL) \
+CPP_FLAGS = \\
+    -mcpu=cortex-m0plus \\
+    -std=gnu++14 \\
+    -ffunction-sections \\
+    -fdata-sections \\
+    -fno-unwind-tables \\
+    -fno-exceptions \\
+    -fno-asynchronous-unwind-tables \\
+    -fno-rtti \\
+    -fno-use-cxa-atexit \\
+    -Wall \\
+    -fstack-usage \\
+    --specs=nano.specs \\
+    -mthumb \\
+    $(OPT_LEVEL) \\
     $(FLOAT_ABI_FLAG)
-AS_FLAGS = \
+AS_FLAGS = \\
     -mcpu=cortex-m0plus $(FLOAT_ABI_FLAG) -mthumb
-LD_FLAGS = \
-    -T$(LD_SCRIPT) \
-    -mcpu=cortex-m0plus \
-    --specs=nosys.specs \
-    -Wl,--gc-sections \
-    -static \
-    --specs=nano.specs \
-    -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group \
+LD_FLAGS = \\
+    -T$(LD_SCRIPT) \\
+    -mcpu=cortex-m0plus \\
+    --specs=nosys.specs \\
+    -Wl,--gc-sections \\
+    -static \\
+    --specs=nano.specs \\
+    -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group \\
     -mthumb $(OPT_LEVEL) $(FLOAT_ABI_FLAG)
 
 # Output directories
