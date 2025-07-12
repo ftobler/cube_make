@@ -4,6 +4,7 @@ from pathlib import Path
 
 from cube_make.parser import EclipseProjectParser
 from cube_make.generator import MakefileGenerator
+from cube_make.config import Config
 
 # List of example project paths
 EXAMPLE_PROJECT_PATHS = [
@@ -29,18 +30,18 @@ def test_compile_example_project(project_path):
     parser = EclipseProjectParser(str(project_path))
     parser.parse()
 
-    if project_path.name == "stm32_project_g030":
-        assert parser.cpu_arch == "cortex-m0plus", "Expected CPU architecture for stm32_project_g030 is cortex-m0plus"
-    if project_path.name == "stm32_project_l412":
-        assert parser.cpu_arch == "cortex-m4", "Expected CPU architecture for stm32_project_l412 is cortex-m4"
-
     # Generate the Makefile
-    config = parser.get_config()
+    config = Config(parser.get_config())
     generator = MakefileGenerator(
         str(project_path),
         config
     )
     makefile_content = generator.generate()
+
+    if project_path.name == "stm32_project_g030":
+        assert parser.cpu_arch == "cortex-m0plus", "Expected CPU architecture for stm32_project_g030 is cortex-m0plus"
+    if project_path.name == "stm32_project_l412":
+        assert parser.cpu_arch == "cortex-m4", "Expected CPU architecture for stm32_project_l412 is cortex-m4"
 
     # Write the Makefile to the project directory
     makefile_path = project_path / "makefile"

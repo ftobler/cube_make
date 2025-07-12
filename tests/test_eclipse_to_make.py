@@ -6,6 +6,7 @@ from unittest.mock import patch, mock_open
 
 from cube_make.parser import EclipseProjectParser
 from cube_make.generator import MakefileGenerator
+from cube_make.config import Config
 from pathlib import Path
 
 # --- Fixtures for test data ---
@@ -135,7 +136,7 @@ def test_parser_extracts_float_abi(stm32_project_path):
 def test_generator_produces_valid_makefile(stm32_project_path):
     parser = EclipseProjectParser(str(stm32_project_path))
     parser.parse()
-    config = parser.get_config()
+    config = Config(parser.get_config())
     generator = MakefileGenerator(
         str(stm32_project_path),
         config
@@ -174,7 +175,7 @@ def test_generator_produces_valid_makefile(stm32_project_path):
 def test_compile_makefile(stm32_project_path):
     parser = EclipseProjectParser(str(stm32_project_path))
     parser.parse()
-    config = parser.get_config()
+    config = Config(parser.get_config())
     generator = MakefileGenerator(
         str(stm32_project_path),
         config

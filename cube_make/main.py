@@ -3,6 +3,7 @@ import os
 import json
 from cube_make.parser import EclipseProjectParser
 from cube_make.generator import MakefileGenerator
+from cube_make.config import Config
 
 
 CONFIG_FILENAME = "cube_make.json"
@@ -23,31 +24,19 @@ def load_config(path: str) -> dict:
     return {}
 
 
-def verify_config(config: dict):
-    required_keys = [
-        "project_name", "source_paths", "include_paths", "defines",
-        "linker_script", "optimization_level", "cpu_arch"
-    ]
-    missing = [key for key in required_keys if key not in config or config[key] is None]
-    if missing:
-        print(f"Config verification failed. Missing keys: {missing}")
-        sys.exit(1)
-    print("Config verification passed.")
-
-
-def print_config(config: dict):
-    print(f"project_name: {config.get('project_name')}")
-    print(f"source_paths: {config.get('source_paths')}")
-    print(f"include_paths: {config.get('include_paths')}")
-    print(f"defines: {config.get('defines')}")
-    print(f"linker_script: {config.get('linker_script')}")
-    print(f"prebuild_step: {config.get('prebuild_step')}")
-    print(f"postbuild_step: {config.get('postbuild_step')}")
-    print(f"convert_hex: {config.get('convert_hex')}")
-    print(f"convert_bin: {config.get('convert_bin')}")
-    print(f"optimization_level: {config.get('optimization_level')}")
-    print(f"float_abi: {config.get('float_abi')}")
-    print(f"cpu_arch: {config.get('cpu_arch')}")
+def print_config(config: Config):
+    print(f"project_name: {config.project_name}")
+    print(f"source_paths: {config.source_paths}")
+    print(f"include_paths: {config.include_paths}")
+    print(f"defines: {config.defines}")
+    print(f"linker_script: {config.linker_script}")
+    print(f"prebuild_step: {config.prebuild_step}")
+    print(f"postbuild_step: {config.postbuild_step}")
+    print(f"convert_hex: {config.convert_hex}")
+    print(f"convert_bin: {config.convert_bin}")
+    print(f"optimization_level: {config.optimization_level}")
+    print(f"float_abi: {config.float_abi}")
+    print(f"cpu_arch: {config.cpu_arch}")
 
 
 def main():
@@ -62,9 +51,10 @@ def main():
     parser.parse()
     parsed_config = parser.get_config()
 
-    config = parsed_config | global_config | local_config   # last one wins
+    merged_config_dict = parsed_config | global_config | local_config   # last one wins
+    config = Config(merged_config_dict)
 
-    verify_config(config)
+    config.verify()
     print_config(config)
 
     generator = MakefileGenerator(
