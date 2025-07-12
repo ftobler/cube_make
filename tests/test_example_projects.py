@@ -75,7 +75,7 @@ def test_compile_example_project(project_path):
         # Run make in the project directory
         print(f"Attempting to compile project: {project_path}")
         result = subprocess.run(
-            ["make", "-C", str(project_path)],
+            ["make", "-j", "8", "-C", str(project_path)],
             capture_output=True,
             text=True
         )
