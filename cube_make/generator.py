@@ -129,10 +129,42 @@ SIZE = arm-none-eabi-size
 # Flags
 OPT_LEVEL = {opt_level_flag}
 FLOAT_ABI_FLAG = {float_abi_flag}
-CFLAGS = -mcpu=cortex-m0plus -mthumb $(OPT_LEVEL) $(FLOAT_ABI_FLAG)
-CXXFLAGS = -mcpu=cortex-m0plus -mthumb $(OPT_LEVEL) $(FLOAT_ABI_FLAG)
-ASFLAGS = -mcpu=cortex-m0plus -mthumb
-LDFLAGS = -T$(LD_SCRIPT) -mcpu=cortex-m0plus -mthumb $(OPT_LEVEL) $(FLOAT_ABI_FLAG)
+C_FLAGS = \
+    -mcpu=cortex-m0plus \
+    -std=gnu11 \
+    -ffunction-sections \
+    -fdata-sections \
+    -Wall \
+    -fstack-usage \
+    --specs=nano.specs \
+    -mthumb \
+    $(OPT_LEVEL) \
+    $(FLOAT_ABI_FLAG)
+CPP_FLAGS = \
+    -mcpu=cortex-m0plus \
+    -std=gnu++14 \
+    -ffunction-sections \
+    -fdata-sections \
+    -fno-exceptions \
+    -fno-rtti \
+    -fno-use-cxa-atexit \
+    -Wall \
+    -fstack-usage \
+    --specs=nano.specs \
+    -mthumb \
+    $(OPT_LEVEL) \
+    $(FLOAT_ABI_FLAG)
+AS_FLAGS = \
+    -mcpu=cortex-m0plus $(FLOAT_ABI_FLAG) -mthumb
+LD_FLAGS = \
+    -T$(LD_SCRIPT) \
+    -mcpu=cortex-m0plus \
+    --specs=nosys.specs \
+    -Wl,--gc-sections \
+    -static \
+    --specs=nano.specs \
+    -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group \
+    -mthumb $(OPT_LEVEL) $(FLOAT_ABI_FLAG)
 
 # Output directories
 BUILD_DIR = build
@@ -152,7 +184,7 @@ $(BUILD_DIR)/$(PROJECT_NAME).elf: $(OBJECTS)
 {tab}@mkdir -p $(@D)
 # pre build step
 {tab}{self.prebuild_step}
-{tab}$(LD) $(LDFLAGS) $(OBJECTS) -o $@
+{tab}$(LD) $(LD_FLAGS) $(OBJECTS) -o $@
 {tab}$(SIZE) $@
 # *.hex conversion
 {hex_conversion}
@@ -163,15 +195,15 @@ $(BUILD_DIR)/$(PROJECT_NAME).elf: $(OBJECTS)
 
 $(BUILD_DIR)/%.o: %.c
 {tab}@mkdir -p $(@D)
-{tab}$(CC) $(CFLAGS) $(C_INCLUDES) $(C_DEFINES) -c $< -o $@
+{tab}$(CC) $(C_FLAGS) $(C_INCLUDES) $(C_DEFINES) -c $< -o $@
 
 $(BUILD_DIR)/%.o: %.cpp
 {tab}@mkdir -p $(@D)
-{tab}$(CXX) $(CXXFLAGS) $(C_INCLUDES) $(C_DEFINES) -c $< -o $@
+{tab}$(CXX) $(CPP_FLAGS) $(C_INCLUDES) $(C_DEFINES) -c $< -o $@
 
 $(BUILD_DIR)/%.o: %.s
 {tab}@mkdir -p $(@D)
-{tab}$(AS) $(ASFLAGS) $< -o $@
+{tab}$(AS) $(AS_FLAGS) $< -o $@
 
 clean:
 {tab}rm -rf $(BUILD_DIR)
