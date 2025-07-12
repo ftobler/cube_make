@@ -29,7 +29,7 @@ jobs:
     - name: Install ARM GCC Toolchain (Windows)
       if: startsWith(matrix.os, 'windows')
       run: |
-        choco install arm-gnu-toolchain
+        choco install -y gcc-arm-embedded
 
     - name: Install dependencies
       run: |
@@ -43,16 +43,16 @@ jobs:
         pytest
       shell: bash
 
-    - name: Run eclipse_to_make on stm32_project_g030
+    - name: Run cube_make on stm32_project_g030
       run: |
-        eclipse_to_make ./tests/stm32_project_g030
+        cube_make ./tests/stm32_project_g030
         cd tests/stm32_project_g030
         make -j 4
       shell: bash
 
-    - name: Run eclipse_to_make on stm32_project_l412
+    - name: Run cube_make on stm32_project_l412
       run: |
-        eclipse_to_make ./tests/stm32_project_l412
+        cube_make ./tests/stm32_project_l412
         cd tests/stm32_project_l412
         make -j 4
       shell: bash
