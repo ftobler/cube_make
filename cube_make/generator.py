@@ -166,9 +166,9 @@ LD_FLAGS = \
 BUILD_DIR = build
 
 # Object files
-C_OBJECTS = $(patsubst %.c,$(BUILD_DIR)/%.o,$(notdir $(C_SOURCES)))
-CPP_OBJECTS = $(patsubst %.cpp,$(BUILD_DIR)/%.o,$(notdir $(CPP_SOURCES)))
-S_OBJECTS = $(patsubst %.s,$(BUILD_DIR)/%.o,$(notdir $(S_SOURCES)))
+C_OBJECTS = $(patsubst %.c,$(BUILD_DIR)/%.o,$(C_SOURCES))
+CPP_OBJECTS = $(patsubst %.cpp,$(BUILD_DIR)/%.o,$(CPP_SOURCES))
+S_OBJECTS = $(patsubst %.s,$(BUILD_DIR)/%.o,$(S_SOURCES))
 
 OBJECTS = $(C_OBJECTS) $(CPP_OBJECTS) $(S_OBJECTS)
 

@@ -88,7 +88,11 @@ def test_parser_extracts_project_name(stm32_project_path):
 def test_parser_extracts_source_paths(stm32_project_path):
     parser = EclipseProjectParser(str(stm32_project_path))
     parser.parse()
-    expected_paths = ["Core", "Drivers", "Application"]
+    expected_paths = [
+        "Core",
+        "Drivers",
+        "Application"
+    ]
     assert sorted(parser.source_paths) == sorted(expected_paths)
 
 
@@ -155,7 +159,7 @@ def test_generator_produces_valid_makefile(stm32_project_path):
     assert "	@mkdir -p $(@D)" in makefile_content  # Check for tab indentation
 
     # Write the Makefile to a temporary location and try to parse it with make -n
-    makefile_path = stm32_project_path / "makefile"
+    makefile_path = stm32_project_path / "Makefile"
     makefile_path.write_text(makefile_content)
 
     try:
@@ -182,7 +186,7 @@ def test_compile_makefile(stm32_project_path):
     )
     makefile_content = generator.generate()
 
-    makefile_path = stm32_project_path / "makefile"
+    makefile_path = stm32_project_path / "Makefile"
     makefile_path.write_text(makefile_content)
 
     try:

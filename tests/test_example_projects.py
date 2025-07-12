@@ -44,7 +44,7 @@ def test_compile_example_project(project_path):
         assert parser.cpu_arch == "cortex-m4", "Expected CPU architecture for stm32_project_l412 is cortex-m4"
 
     # Write the Makefile to the project directory
-    makefile_path = project_path / "makefile"
+    makefile_path = project_path / "Makefile"
     makefile_path.write_text(makefile_content)
 
     print(f"--- Generated Makefile for {project_path} ---")
