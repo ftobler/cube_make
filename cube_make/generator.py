@@ -145,9 +145,7 @@ CPP_FLAGS = \\
     -std=gnu++14 \\
     -ffunction-sections \\
     -fdata-sections \\
-    -fno-unwind-tables \\
     -fno-exceptions \\
-    -fno-asynchronous-unwind-tables \\
     -fno-rtti \\
     -fno-use-cxa-atexit \\
     -Wall \\
@@ -195,14 +193,17 @@ $(BUILD_DIR)/$(PROJECT_NAME).elf: $(OBJECTS)
 # post build step
 {tab}{self.postbuild_step}
 
+# all targets for C (*.c) files
 $(BUILD_DIR)/%.o: %.c
 {tab}@mkdir -p $(@D)
 {tab}$(CC) $(C_FLAGS) $(C_INCLUDES) $(C_DEFINES) -c $< -o $@
 
+# all targets for C++ (*.cpp) files
 $(BUILD_DIR)/%.o: %.cpp
 {tab}@mkdir -p $(@D)
 {tab}$(CXX) $(CPP_FLAGS) $(C_INCLUDES) $(C_DEFINES) -c $< -o $@
 
+# all targets for assembly (*.s) files
 $(BUILD_DIR)/%.o: %.s
 {tab}@mkdir -p $(@D)
 {tab}$(AS) $(AS_FLAGS) $< -o $@
