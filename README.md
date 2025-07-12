@@ -1,23 +1,28 @@
-# eclipse_to_make
+# cube_to_make
 
-This project aims to generate a Makefile for an existing Eclipse CDT project, particularly useful for STM32 microcontroller projects.
+[![Build and Test](https://github.com/ftobler/cube_make/actions/workflows/main.yml/badge.svg)](https://github.com/ftobler/cube_make/actions/workflows/main.yml)
+
+
+Create a makefile from a STM32 cube project. It mimics what Eclipse CDT pipelines would do in combination with ST specific behaviour.
 
 ## Usage
 
-To generate the Makefile for an Eclipse CDT project, run the `eclipse_to_make` command followed by the path to your Eclipse project directory:
-
-```bash
-eclipse_to_make /path/to/your/eclipse_project
+Install the python package:
+```
+pip install git+https://github.com/ftobler/cube_make.git
 ```
 
-For example, to generate the Makefile for the provided example project:
 
-```bash
-eclipse_to_make ./tests/stm32_project
+This made the `cube_make` command available. Use it like:
+```
+cube_make <path_to_project>
 ```
 
-After the Makefile is generated, you can build your project using `make`:
+
+This will generate a `makefile` in the project folder. You can execute `make`, it will put results in `build`.
 
 ```bash
-make
+make clean
+make -j 16
 ```
+
