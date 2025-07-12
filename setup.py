@@ -9,7 +9,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'cube_make=cube_make:main',
+            'cube_make=cube_make.main:main_console',
         ],
     },
 )
