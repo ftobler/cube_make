@@ -91,14 +91,17 @@ class EclipseProjectParser:
                     if option.get("name") == "Include paths (-I)":
                         for value in option.findall("listOptionValue"):
                             val = value.get("value")
+                            print(f"Found include path: {val}")
                             if val is not None:
                                 unique_include_paths.add(val.replace("../", ""))
                     elif option.get("name") == "Define symbols (-D)":
                         for value in option.findall("listOptionValue"):
                             val = value.get("value")
+                            print(f"Found define: {val}")
                             if val is not None:
                                 unique_defines.add(val)
                     elif option.get("superClass") == "com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level":
+                        print("Found optimization level option")
                         optimization_level = option.get("value")
                         if optimization_level:
                             self.optimization_level = optimization_level.replace(
@@ -106,12 +109,15 @@ class EclipseProjectParser:
                             )
                         else:
                             self.optimization_level = None
-                    elif option.get("superClass") == "com.st.stm32cube.ide.mcu.gnu.managedbuild.option.floatabi":
-                        float_abi = option.get("value")
-                        if float_abi:
-                            self.float_abi = float_abi.replace("com.st.stm32cube.ide.mcu.gnu.managedbuild.option.floatabi.value.", "")
-                        else:
-                            self.float_abi = None
+            for option in tool_chain.findall("option"):
+                print(option.get("superClass"))
+                if option.get("superClass") == "com.st.stm32cube.ide.mcu.gnu.managedbuild.option.floatabi":
+                    print("Found float ABI option")
+                    float_abi = option.get("value")
+                    if float_abi:
+                        self.float_abi = float_abi.replace("com.st.stm32cube.ide.mcu.gnu.managedbuild.option.floatabi.value.", "")
+                    else:
+                        self.float_abi = None
 
         self.include_paths = sorted(list(unique_include_paths))
         self.defines = sorted(list(unique_defines))

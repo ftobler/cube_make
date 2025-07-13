@@ -134,6 +134,30 @@ def test_parser_extracts_float_abi(stm32_project_path):
     parser.parse()
     assert parser.float_abi == "soft"
 
+    config = Config(parser.get_config())
+    assert config.float_abi == "soft"
+
+
+def test_parser_extracts_float_abi_g030():
+    path = "tests/stm32_project_g030"
+    parser = EclipseProjectParser(path)
+    parser.parse()
+    assert parser.float_abi is None  # not specified here
+
+    config = Config(parser.get_config())
+    assert config.float_abi == "soft"  # fallback to soft
+
+
+def test_parser_extracts_float_abi_l412():
+    path = "tests/stm32_project_l412"
+    parser = EclipseProjectParser(path)
+    parser.parse()
+    assert parser.float_abi == "hard"
+
+    config = Config(parser.get_config())
+    assert config.float_abi == "hard"
+
+
 # --- Tests for MakefileGenerator ---
 
 
@@ -185,6 +209,7 @@ def test_compile_makefile(stm32_project_path):
         config
     )
     makefile_content = generator.generate()
+    print(makefile_content)  # For debugging purposes
 
     makefile_path = stm32_project_path / "Makefile"
     makefile_path.write_text(makefile_content)

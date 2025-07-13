@@ -16,8 +16,13 @@ class Config:
         self.convert_hex = config_dict.get("convert_hex", False)
         self.convert_bin = config_dict.get("convert_bin", False)
         self.optimization_level = config_dict.get("optimization_level")
-        self.float_abi = config_dict.get("float_abi", "")
+        float_abi = config_dict.get("float_abi", None)
         self.cpu_arch = config_dict.get("cpu_arch")
+
+        if float_abi is not None:
+            self.float_abi = float_abi
+        else:
+            self.float_abi = "soft"  # must apply a default if missing
 
     def verify(self):
         """Verifies that the essential configuration values are present."""
