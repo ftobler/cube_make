@@ -166,6 +166,7 @@ LD_FLAGS = {backslash}
     {arch_flag} {backslash}
     --specs=nosys.specs {backslash}
     -Wl,--gc-sections {backslash}
+    -Wl,-Map=$(BUILD_DIR)/$(PROJECT_NAME).map {backslash}
     -static {backslash}
     --specs=nano.specs {backslash}
     -mthumb {backslash}
