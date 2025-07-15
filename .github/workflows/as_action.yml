@@ -1,0 +1,31 @@
+name: Test eclipse-to-make Action
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-action:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Generate Makefile for stm32_project_g030 using action
+      uses: ftobler/eclipse-to-make
+      with:
+        project_path: ./tests/stm32_project_g030
+
+    - name: Build stm32_project_g030
+      run: |
+        cd tests/stm32_project_g030
+        make
+
+    - name: Generate Makefile for stm32_project_l412 using action
+      uses: ftobler/eclipse-to-make
+      with:
+        project_path: ./tests/stm32_project_l412
+
+    - name: Build stm32_project_l412
+      run: |
+        cd tests/stm32_project_l412
+        make
