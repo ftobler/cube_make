@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
         python-version: ["3.10", "3.11", "3.12", "3.13"]
 
     steps:
@@ -30,6 +30,11 @@ jobs:
       if: startsWith(matrix.os, 'windows')
       run: |
         choco install -y gcc-arm-embedded
+
+    - name: Install ARM GCC Toolchain (macOS)
+      if: runner.os == 'macOS'
+      run: brew install --cask gcc-arm-embedded
+      shell: bash
 
     - name: Install dependencies
       run: |
