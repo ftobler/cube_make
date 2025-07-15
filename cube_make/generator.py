@@ -226,5 +226,16 @@ clean:
     def format_file_list(self, key: str, file_list: List[str], prefix: str = "") -> str:
         if len(file_list) == 0:
             return f"# {key} = <list is empty>"
-        formatted_list = [f"{prefix}{item}" for item in file_list]
-        return f"{key} = " + (f" {backslash}{newline}{tab}".join([""] + formatted_list))
+        # formatted_list = [f"{prefix}{item}" for item in file_list]
+        # return f"{key} = " + (f" {backslash}{newline}{tab}".join([""] + formatted_list))
+
+        formatted_list = []
+        for item in file_list:
+            # Escape make-unsafe characters by quoting the item
+            if item == "":
+                continue
+            if any(c in item for c in [' ', '(', ')', '$', '#', '&', ';', '|', '<', '>', '*', '?', '[', ']', '{', '}']):
+                formatted_list.append(f"'{prefix}{item}'")
+            else:
+                formatted_list.append(f"{prefix}{item}")
+        return f"{key} = {backslash}{newline}{tab}" + (f" {backslash}{newline}{tab}".join(formatted_list))
