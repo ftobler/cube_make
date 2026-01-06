@@ -68,4 +68,3 @@ jobs:
       run: |
         pip install build
         python -m build --wheel
-        rm -rf build
