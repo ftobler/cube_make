@@ -13,3 +13,8 @@ tests/*project*/Makefile
 .pytest_cache/
 package-lock.json
 __pycache__
+
+# wheel build and dist
+# (python -m build --wheel)
+build
+dist
