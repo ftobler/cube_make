@@ -23,6 +23,12 @@ jobs:
         cd tests/stm32_project_g030
         make
 
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: stm32_project_g030_build_${{ matrix.os }}_${{ matrix.python-version }}
+        path: tests/stm32_project_g030/build
+
     - name: Generate Makefile for stm32_project_l412 using action
       uses: ftobler/cube_make@v1
       with:
@@ -32,3 +38,9 @@ jobs:
       run: |
         cd tests/stm32_project_l412
         make
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: stm32_project_l412_build_${{ matrix.os }}_${{ matrix.python-version }}
+        path: tests/stm32_project_l412/build
