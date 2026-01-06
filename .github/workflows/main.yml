@@ -63,3 +63,9 @@ jobs:
         cd tests/stm32_project_l412
         make -j 4
       shell: bash
+
+    - name: Build wheel
+      run: |
+        pip install build
+        python -m build --wheel
+        rm -rf build
