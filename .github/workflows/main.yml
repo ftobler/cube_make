@@ -60,7 +60,7 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: stm32_project_g030_build
+        name: stm32_project_g030_build_${{ matrix.os }}_${{ matrix.python-version }}
         path: tests/stm32_project_g030/build
 
     - name: Run cube_make on stm32_project_l412
@@ -73,7 +73,7 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: stm32_project_l412
+        name: stm32_project_l412_build_${{ matrix.os }}_${{ matrix.python-version }}
         path: tests/stm32_project_l412/build
 
     - name: Build wheel
