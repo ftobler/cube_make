@@ -42,11 +42,13 @@ jobs:
         pip install -e .[test]
       shell: bash
 
-    - name: Test with pytest
+    - name: Install python dev dependencies
       run: |
         pip install pytest mypy flake8
-        pytest
       shell: bash
+
+    - name: Run pytests
+      run: pytest
 
     - name: Run cube_make on stm32_project_g030
       run: |
