@@ -32,6 +32,7 @@ jobs:
       with:
         name: stm32_project_g030_build_${{ matrix.os }}_${{ matrix.python-version }}
         path: tests/stm32_project_g030/build
+        retention-days: 3
 
     - name: Generate Makefile for stm32_project_l412 using action
       uses: ftobler/cube_make@v1
@@ -48,3 +49,4 @@ jobs:
       with:
         name: stm32_project_l412_build_${{ matrix.os }}_${{ matrix.python-version }}
         path: tests/stm32_project_l412/build
+        retention-days: 3

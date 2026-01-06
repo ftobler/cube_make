@@ -62,6 +62,7 @@ jobs:
       with:
         name: stm32_project_g030_build_${{ matrix.os }}_${{ matrix.python-version }}
         path: tests/stm32_project_g030/build
+        retention-days: 3
 
     - name: Run cube_make on stm32_project_l412
       run: |
@@ -75,6 +76,7 @@ jobs:
       with:
         name: stm32_project_l412_build_${{ matrix.os }}_${{ matrix.python-version }}
         path: tests/stm32_project_l412/build
+        retention-days: 3
 
     - name: Build wheel
       run: |
@@ -86,3 +88,4 @@ jobs:
       with:
         name: wheel_${{ matrix.os }}_${{ matrix.python-version }}
         path: dist
+        retention-days: 3
