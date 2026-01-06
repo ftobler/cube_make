@@ -57,11 +57,11 @@ jobs:
         make -j 4
       shell: bash
 
-    # - name: Upload artifact
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: stm32_project_g030_build_${{ matrix.os }}_${{ matrix.python-version }}
-    #     path: tests/stm32_project_g030/build
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: stm32_project_g030_build_${{ matrix.os }}_${{ matrix.python-version }}
+        path: tests/stm32_project_g030/build
 
     - name: Run cube_make on stm32_project_l412
       run: |
@@ -70,13 +70,19 @@ jobs:
         make -j 4
       shell: bash
 
-    # - name: Upload artifact
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: stm32_project_l412_build_${{ matrix.os }}_${{ matrix.python-version }}
-    #     path: tests/stm32_project_l412/build
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: stm32_project_l412_build_${{ matrix.os }}_${{ matrix.python-version }}
+        path: tests/stm32_project_l412/build
 
     - name: Build wheel
       run: |
         pip install build
         python -m build --wheel
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: wheel_${{ matrix.os }}_${{ matrix.python-version }}
+        path: dist
